@@ -1,33 +1,55 @@
-import pyautogui #  Biblioteca para automação
-import time # Bivlioteca para dar pausas no código
-import re # Biblioeteca para expressöes regulares
+import pyautogui  # Biblioteca para automação
+import time  # Biblioteca para dar pausas no código
+import re  # Biblioteca para expressões regulares
 
-'''O objetivo do código é bem simples. Consiste em 2 passos, o primeiro é perguntar ao usuário qual email ele deseja enviar, mas antes o código valida o formato do email
-e se for válido envia, caso contrário ele pede um email válido. O segundo passo é inicar a automação do envio de email, ele busca o navegador, cola o link do email 
-envia para o email informado com corpo  e assunto'''
+'''O objetivo do código é bem simples. Consiste em 2 passos:
+1. Perguntar ao usuário qual email ele deseja enviar e validar o formato do email.
+2. Iniciar a automação do envio de email (abrir o navegador, escrever e enviar o email).'''
 
-
-email_teste = input("Para qual email voce deseja enviar?") # Solicta ao usuário o email que ele quer enviar
-def valida_email(email): # Valida se o email possui o formato @gmail, se sim ele segue o código
-    padrao = r'^[\w\.-]+@gmail\.com.br$'
+# Função para validar o email
+def valida_email(email): 
+    padrao = r'^[\w\.-]+@gmail\.com\.br$'  # Expressão regular para validar o formato do e-mail
     return re.match(padrao, email) is not None
-if not valida_email(email_teste): # se não ele diga o texto abaixo
-    print("Email inválido! Certifique-se de que é um endereço @gmail.com válido.")
-    exit()  # Encerra o programa se o email for inválido
-pyautogui.PAUSE = 0.5 # pausa 5 sgeundos para em cada linha de código
-pyautogui.press("win") # aperta a tecla 
-pyautogui.write("edge") # Digita o nome do navegador
-pyautogui.press("Enter") #automação para tecla "enter
-pyautogui.write("https://mail.google.com") # Digita a url do email
-pyautogui.press("Enter") # Passa a tecla "Enter"
-time.sleep(6) # Espera 5 segundos par a página carregar
-pyautogui.click(62, 210) # clica na posicao para enviar o email
-pyautogui.click(x=829, y=302) # clica na posiçao para escrever o email
-time.sleep(2) # espera 2 segundos
-pyautogui.write(email_teste) # chama a variável email_teste
-pyautogui.press("Enter") # Pressiona enter
-pyautogui.press("Tab") # Pressiona o tab
-pyautogui.write("Email teste para o Github") # preenche as informaçõesdo corpo do email
-pyautogui.press("Tab") # Pressiona o tab
-pyautogui.write("Este é um teste de automação com Python e PyAutoGUI para fins de aprendizado.") # preenche as informaçõesdo corpo do email
-pyautogui.hotkey("ctrl", "enter") # envia o email ao destinatário
+
+# Loop para validar o email
+while True:
+    email_teste = input("Para qual email voce deseja enviar?").strip()  # Solicita ao usuário o email
+    if not valida_email(email_teste):  # Verifica se o e-mail é válido
+        print("Email inválido! Certifique-se de que é um endereço @gmail.com.br válido e tente novamente!")
+    else:
+        print("Email válido!")
+        break  # Sai do loop quando o e-mail for válido
+
+# Configurações do PyAutoGUI
+pyautogui.PAUSE = 0.5  # Pausa de 0.5 segundos entre cada comando
+
+# Abertura do navegador
+pyautogui.press("win")  # Pressiona a tecla 'win'
+pyautogui.write("edge")  # Digita "edge"
+pyautogui.press("Enter")  # Pressiona 'Enter'
+time.sleep(2)  # Espera 2 segundos para o navegador abrir
+
+# Acesso ao Gmail
+pyautogui.write("https://mail.google.com")  # Digita a URL do Gmail
+pyautogui.press("Enter")  # Pressiona 'Enter'
+time.sleep(5)  # Espera 5 segundos para a página carregar
+
+# Ação para escrever o e-mail
+# Ajuste as coordenadas conforme necessário
+pyautogui.click(x=62, y=210)  # Clica no botão de compor e-mail (verifique se essas coordenadas estão corretas)
+time.sleep(2)  # Aguarda 2 segundos para abrir o campo de composição do e-mail
+pyautogui.click(x=829, y=302)  # Clica na área de destinatário (verifique as coordenadas)
+time.sleep(2)  # Aguarda 2 segundos
+
+# Preenchendo os campos de e-mail
+pyautogui.write(email_teste)  # Digita o e-mail fornecido pelo usuário
+pyautogui.press("Enter")
+pyautogui.press("Tab")  # Vai para o campo de assunto
+pyautogui.write("Email teste para o Github")  # Assunto do e-mail
+pyautogui.press("Tab")  # Vai para o corpo do e-mail
+pyautogui.write("Este é um teste de automação com Python e PyAutoGUI para fins de aprendizado.")  # Corpo do e-mail
+
+# Envia o e-mail
+pyautogui.hotkey("ctrl", "enter")  # Pressiona 'Ctrl + Enter' para enviar o e-mail
+print("Email enviado com sucesso!")
+  
